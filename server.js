@@ -14,8 +14,10 @@ app.use(methodOverRide('_method'));
 
 //Post /dinosaurs
 
-app.get('/',function(req,res){
-res.render('index')
+
+
+app.get('/',function(dinos){
+    res.render('dinos/new',{dinos})
 })
 //TODo's  remove file system stud   ` and use sequelize functions
 // its writing to a database instead of a 
@@ -42,6 +44,8 @@ app.get('/dinosaurs/:id/edit',function(req,res){
 });
 
 app.get('/dinosaurs/:id',function(req,res){
+    db.dinos.findOne()
+    where:(id.req.params.id)
     let dinosaurs = fs.readFileSync('./dinosaurs.json');
     let dinoData = JSON.parse(dinosaurs);
 
@@ -59,7 +63,7 @@ app.post('/dinosaurs',function(req,res){
     let dinoData = JSON.parse(dinosaurs);
     //push it to new data on array
     let newDino = {
-        type: req.body.dinosaurType,
+        enviroment: req.body.dinosaurType,
         name: req.body.dinosaurName
     }
     dinoData.push(newDino);

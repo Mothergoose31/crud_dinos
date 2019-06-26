@@ -9,7 +9,9 @@
 </ul> -->
 <ul>
 <% dinosaurs.forEach((dinosaur, i) => {%>
-<li><a href="/dinosaurs/<%= i %>"><%=dinosaur.name%> </a> is a <%= dinosaur.type %></li>
+<li>
+    <a href="/dinosaurs/<%= i %>"><%=dinosaur.name%> </a> is a <%= dinosaur.type %>
+</li>
 
 <%});%>
     

@@ -1,0 +1,16 @@
+<h1>These are ALL of the dinos that we  can GET</h1>
+<a href="/dinosaurs/new">add a dino</a>
+<!--
+<ul>
+<%dinosaurs.forEach(function(dinosaur, i) {%>
+    <li><%=dinosaur.name%> is a <%= dinosaur.type %></li>
+
+    <%});%>
+</ul> -->
+<ul>
+<% dinosaurs.forEach((dinosaur, i) => {%>
+<li><a href="/dinosaurs/<%= i %>"><%=dinosaur.name%> </a> is a <%= dinosaur.type %></li>
+
+<%});%>
+    
+</ul>

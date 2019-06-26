@@ -1,0 +1,9 @@
+body{
+    background-color: lemonchiffon;
+    color: maron;
+    font-family: 'Courier New', Courier, monospace;
+    
+}
+h1 , h2 {
+    text-shadow: 2px 2px red;
+}

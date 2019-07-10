@@ -20,15 +20,12 @@ app.get('/',function(dinos){
     res.render('dinos/new',{dinos})
 })
 //TODo's  remove file system stud   ` and use sequelize functions
-// its writing to a database instead of a 
+
 app.get('/dinosaurs',function(req,res){
     db.dino.findAll().then(function(dinosaurs){
-        res.render('dinos/index',{dinosaurs})
+        res.render('dinos/index',{dinosaurs:dinosaurs})
     })
-//     let dinosaurs = fs.readFileSync('./dinosaurs.json');
-//     let dinoData = JSON.parse(dinosaurs)
-//     console.log(dinoData);
-//     res.render('dinos/index',{dinosaurs: dinoData})
+
 });
 
 app.get('/dinosaurs/new',function(req,res){
@@ -36,68 +33,59 @@ app.get('/dinosaurs/new',function(req,res){
 });
 
 app.get('/dinosaurs/:id/edit',function(req,res){
-    let dinosaurs = fs.readFileSync('./dinosaurs.json');
-    let dinoData = JSON.parse(dinosaurs);
-    let id = parseInt(req.params.id);
+    db.dinosaur.findByPk(parseInt(req.params.id))
+    .then(function(dinos) {
+        res.render('dinos/edit',{dinosaur:dino})
+    });
     
     res.render('dinos/edit',{dinosaur:dinoData[id],id});
 });
 
 app.get('/dinosaurs/:id',function(req,res){
-    db.dinos.findOne()
-    where:(id.req.params.id)
-    let dinosaurs = fs.readFileSync('./dinosaurs.json');
-    let dinoData = JSON.parse(dinosaurs);
+    db.dinosaur.findByPk(parseInt(req.params.id)
+        .then(function(dino){
+            res.render('dinos/show',{dinosaur:dinos})
+    })
+    );
 
-    let id = parseInt(req.params.id)
-    res.render('dinos/show',{dinosaur: dinoData[id],id})
-});
+    
+    
 
+
+
+    
 //post dinos 
 
 app.post('/dinosaurs',function(req,res){
-    //read our JSON file
-    let dinosaurs = fs.readFileSync('./dinosaurs.json');
-
-    //convert it to an array
-    let dinoData = JSON.parse(dinosaurs);
-    //push it to new data on array
     let newDino = {
         enviroment: req.body.dinosaurType,
         name: req.body.dinosaurName
     }
-    dinoData.push(newDino);
-    //write the array back into the file 
-    fs.writeFileSync('./dinosaurs.json',JSON.stringify(dinoData));
-    res.redirect('/dinosaurs')
-})
+    db.dinosaur.create(newDino).then(function(dino){
+        res.redirect('/dinosaurs')
+    })
+});
 
 app.delete('/dinosaurs/:id',function(req,res){
     //Read the data from the file 
-    let dinosaurs = fs.readFileSync('./dinosaurs.json');
-    
-
-
-    //parse the data into a object
-    let dinoData = JSON.parse(dinosaurs);
-    let id = parseInt(req.params.id);
-    dinoData.splice(id,1);
-
-    //splice out the object at the specified index
-    let dinoString = JSON.stringify(dinoData);
-
-    //write the object
-    fs.writeFileSync('./dinosaurs.json',dinoString);
-    res.redirect('/dinosaurs');
-})
+    db.dinosaur.destroy({
+        where:{id:parseInt(req.params.id)}
+    }).then(function(data){
+        res.redirect('/dinosaurs')
+    });
+});
 
 app.put('/dinosaurs/:id',function(req,res){
-    let dinosaurs = fs.readFileSync('./dinosaurs.json');
-    let dinoData = JSON.parse(dinosaurs);
-    let id = parseInt(req.params.id);
-    dinoData[id].name = req.body.dinosaurName;
-    dinoData[id].type = req .body.dinosaurType;
-    fs.writeFileSync('./dinosaurs.json',JSON.stringify(dinoData));
+    db.dinosaur.update({
+        name:req.body.dinosaurName,
+        enviroment:req.body.dinosaurType
+    },
+    {
+        where:{id: parseInt(req.body.params.id)}
+    })
+    .then (function(dino){
+
+    })
     res.redirect("/dinosaurs/" + id)
 
 })
@@ -106,4 +94,4 @@ app.listen(port,function(){
     console.log('we are listening'+ port);
 })
 
-//get dinosaurs/new - serves up new dino form
+//get dinosaurs/new - serves up new dino 
